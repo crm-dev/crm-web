@@ -11,8 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.crm.dbms.Connector;
 import org.crm.entity.ServiceOrder;
-import org.sanalika.unused.ozg.Connector;
 
 /**
  *
@@ -22,10 +22,12 @@ public class ServiceOrderDBManager {
     
     public ServiceOrder getOne(int id) {
 
-        Connection conn = Connector.getConnection();
+        Connector connector = new Connector();
+        Connection conn = null;
         ServiceOrder result = null;
         try {
-
+            
+            conn = connector.getConnection();
             PreparedStatement stmt = null;
             stmt = conn.prepareStatement("SELECT * FROM serviceOrder WHERE id=?");
             ResultSet rs = null;
@@ -53,10 +55,12 @@ public class ServiceOrderDBManager {
 
     public List<ServiceOrder> getList() {
 
-        Connection conn = Connector.getConnection();
+        Connector connector = new Connector();
+        Connection conn = null;
         List<ServiceOrder> resultList = new ArrayList<ServiceOrder>();
         try {
-
+            
+            conn = connector.getConnection();
             PreparedStatement stmt = null;
             stmt = conn.prepareStatement("SELECT * FROM serviceOrder");
             ResultSet rs = null;
@@ -83,11 +87,13 @@ public class ServiceOrderDBManager {
 
     public ServiceOrder saveServiceOrder(ServiceOrder serviceOrder) {
 
-        Connection conn = Connector.getConnection();
+        Connector connector = new Connector();
+        Connection conn = null;
         ResultSet generatedKeys = null;
         PreparedStatement stmt = null;
         try {
 
+            conn = connector.getConnection();
             stmt = conn.prepareStatement("INSERT INTO serviceOrder(serviceName) VALUES(?)", Statement.RETURN_GENERATED_KEYS);
 
             stmt.setString(1, serviceOrder.getServiceName());
@@ -104,6 +110,7 @@ public class ServiceOrderDBManager {
                 throw new SQLException("Creating serviceOrder failed, no generated key obtained.");
             }
         } catch (java.sql.SQLException ex) {
+            System.out.println(ex.getStackTrace());
         } finally {
             try {
                 stmt.close();

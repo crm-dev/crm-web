@@ -43,10 +43,7 @@ public class GetServiceOrders extends HttpServlet {
 
             JSONArray resultArray = new JSONArray();
             for (ServiceOrder serviceOrder : serviceOrders) {
-                JSONObject jsonSo = new JSONObject();
-                jsonSo.put("serviceName", serviceOrder.getServiceName());
-
-                resultArray.add(jsonSo);
+                resultArray.add(serviceOrder.toJSon());
             }
 
             out.println(resultArray);

@@ -16,6 +16,10 @@
         <servlet-name>GetServiceOrder</servlet-name>
         <servlet-class>org.crm.web.services.obtain.GetServiceOrderDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateOrderPot</servlet-name>
+        <servlet-class>org.crm.web.services.create.CreateOrderPot</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServiceOrderCreate</servlet-name>
         <url-pattern>/crm.createserviceorder</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>GetServiceOrder</servlet-name>
         <url-pattern>/crm.getserviceorder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateOrderPot</servlet-name>
+        <url-pattern>/crm.createorderpot</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

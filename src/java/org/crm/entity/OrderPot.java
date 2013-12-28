@@ -14,7 +14,7 @@ public class OrderPot {
     
     private int id;
     
-    private Product product;
+    private int productId;
     
     private int quantity;
     
@@ -28,12 +28,12 @@ public class OrderPot {
         this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public int getQuantity() {

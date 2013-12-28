@@ -8,42 +8,42 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import org.crm.dbms.Connector;
-import org.crm.entity.ServiceOrderPot;
+import org.crm.entity.OrderPot;
 
 /**
  *
  * @author cag
  */
-public class ServiceOrderPotDBManager {
+public class OrderPotDBManager {
 
-    public List<ServiceOrderPot> getList(int serviceOrderId) {
+    public List<OrderPot> getList(List<Integer> ids) {
 
         Connector connector = new Connector();
         Connection conn = null;
-        List<ServiceOrderPot> resultList = new ArrayList<ServiceOrderPot>();
+        List<OrderPot> resultList = new ArrayList<OrderPot>();
         try {
-
             conn = connector.getConnection();
             PreparedStatement stmt = null;
-            stmt = conn.prepareStatement("SELECT * FROM serviceOrderPot WHERE serviceOrderId=?");
+            
+            String resultParam = StatementHelper.createJoinedStatementParam(ids);
+            stmt = conn.prepareStatement("SELECT * FROM orderPot WHERE id IN(" + resultParam + ")");
             ResultSet rs = null;
-
-            stmt.setInt(1, serviceOrderId);
-
+            
             rs = stmt.executeQuery();
 
             while (rs.next()) {
                 
-                ServiceOrderPot serviceOrderPot = new ServiceOrderPot();
-                serviceOrderPot.setOrderPotId(rs.getInt("orderPotId"));
-                serviceOrderPot.setServiceOrderId(rs.getInt("serviceOrderId"));
-                serviceOrderPot.setClientAdressId(rs.getInt("clientAddressId"));
-                serviceOrderPot.setDeliveryAt(rs.getDate("deliveryAt"));
+                OrderPot orderPot = new OrderPot();
+                orderPot.setId(rs.getInt("id"));
+                orderPot.setPrice(rs.getDouble("price"));
+                orderPot.setProductId(rs.getInt("productId"));
+                orderPot.setQuantity(rs.getInt("quantity"));
                 
-                resultList.add(serviceOrderPot);
+                resultList.add(orderPot);
             }
         } catch (java.sql.SQLException ex) {
         } finally {
@@ -57,27 +57,31 @@ public class ServiceOrderPotDBManager {
         return resultList;
     }
 
-    public void saveServiceOrderPot(ServiceOrderPot serviceOrderPot) {
+    public OrderPot saveOrderPot(OrderPot orderPot) {
 
         Connector connector = new Connector();
         Connection conn = null;
         PreparedStatement stmt = null;
+        ResultSet resultSet = null;
         try {
-
             conn = connector.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO serviceOrderPot(serviceOrderId,orderPotId,clientOrganizationAddressId,deliveryAt) VALUES(?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO orderPot(productId,quantity,price) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
             
-            stmt.setInt(1, serviceOrderPot.getServiceOrderId());
-            stmt.setInt(2, serviceOrderPot.getOrderPotId());
-            stmt.setInt(3, serviceOrderPot.getClientAdressId());
-            stmt.setDate(4, serviceOrderPot.getDeliveryAt());
+            stmt.setInt(1, orderPot.getProductId());
+            stmt.setInt(2, orderPot.getQuantity());
+            stmt.setDouble(3, orderPot.getPrice());
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Creating serviceOrderPot failed, no rows affected.");
             }
 
-            stmt.getGeneratedKeys();
+            resultSet = stmt.getGeneratedKeys();
+            
+            if(resultSet.next()) {
+                orderPot.setId(resultSet.getInt(1));
+            }
+            
         } catch (java.sql.SQLException ex) {
         } finally {
             try {
@@ -87,6 +91,8 @@ public class ServiceOrderPotDBManager {
             }
             conn = null;
         }
+        
+        return orderPot;
     }
 
 }

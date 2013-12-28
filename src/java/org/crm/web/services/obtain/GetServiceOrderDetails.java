@@ -44,17 +44,17 @@ public class GetServiceOrderDetails extends HttpServlet {
             if (serviceOrderId.equals("")) {
                 return;//TODO : hata kodu basılacak
             }
-
-            ServiceOrder serviceOrder = new ServiceOrder();
-            serviceOrder.setServiceName(serviceOrderId);
+            
+            Integer id = Integer.parseInt(serviceOrderId);
+            
+            if(id == null) {
+                return;
+            }
 
             ServiceOrderDBManager serviceOrderDBManager = new ServiceOrderDBManager();
-            serviceOrder = serviceOrderDBManager.saveServiceOrder(serviceOrder);
+            ServiceOrder serviceOrder = serviceOrderDBManager.getOne(id);
 
-            JSONObject jsonResult = new JSONObject();
-            jsonResult.put("id", serviceOrder.getId());
-
-            out.println(jsonResult);
+            out.println(serviceOrder.toJSon());
         } finally {
             out.close();
         }

@@ -7,6 +7,7 @@
 package org.crm.entity;
 
 import java.util.List;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -52,6 +53,14 @@ public class ServiceOrder {
 
     public void setTotalOrderPrice(double totalOrderPrice) {
         this.totalOrderPrice = totalOrderPrice;
+    }
+    
+    public JSONObject toJSon() {
+        JSONObject jo = new JSONObject();
+        jo.put("id", this.id);
+        jo.put("serviceName", this.serviceName);
+        
+        return jo;
     }
     
 }

@@ -8,20 +8,20 @@ package org.crm.web.services.create;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.crm.db.manager.OrderPotDBManager;
 import org.crm.db.manager.ServiceOrderPotDBManager;
-import org.crm.entity.ServiceOrderPot;
+import org.crm.entity.OrderPot;
 import org.json.simple.JSONObject;
 
 /**
  *
  * @author cag
  */
-public class CreateServiceOrderPot extends HttpServlet {
+public class CreateOrderPot extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,40 +37,49 @@ public class CreateServiceOrderPot extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String serviceOrderIdParam = request.getParameter("serviceOrderId");
-            String orderPotIdParam = request.getParameter("orderPotId");
-            String clientAdressIdParam = request.getParameter("clientAdressId");
-            String deliveryAtParam = request.getParameter("deliveryAt");
             
-            if((serviceOrderIdParam == null) || (orderPotIdParam == null) || (clientAdressIdParam == null) || (deliveryAtParam == null)) {
+            /*
+            CREATE TABLE `orderPot` (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    productId INT(11) NOT NULL DEFAULT 0,
+    quantity INT(11) NOT NULL DEFAULT 0,
+    price FLOAT(11) NOT NULL DEFAULT 0,/*service : MALIYET(Ana Başlık)
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
+            */
+            
+            String productIdParam = request.getParameter("productId");
+            String quantityParam = request.getParameter("quantity");
+            String priceParam = request.getParameter("price");//TODO : Hesaplanacak
+            
+            if((productIdParam == null) || (quantityParam == null) || (priceParam == null)) {
                 return;//TODO : hata kodu basılacak
             }
             
-            if(serviceOrderIdParam.equals("") || orderPotIdParam.equals("") || clientAdressIdParam.equals("") || deliveryAtParam.equals("")) {
+            if(productIdParam.equals("") || quantityParam.equals("") || priceParam.equals("")) {
                 return;//TODO : hata kodu basılacak
             }
             
-            Integer serviceOrderId = Integer.parseInt(serviceOrderIdParam);
-            Integer orderPotId = Integer.parseInt(orderPotIdParam);
-            Integer clientAddressId = Integer.parseInt(clientAdressIdParam);
-            Date deliveryAt = Date.valueOf(deliveryAtParam);
+            Integer productId = Integer.parseInt(productIdParam);
+            Integer quantity = Integer.parseInt(quantityParam);
+            Double price = Double.parseDouble(priceParam);
             
-            if((serviceOrderId == null) || (orderPotId == null) || (clientAddressId == null) || (deliveryAt == null)) {
+            if((productId == null) || (quantity == null) || (price == null)) {
                 return;//TODO : hata kodu
             }
             
-            ServiceOrderPot serviceOrderPot = new ServiceOrderPot();
-            serviceOrderPot.setServiceOrderId(serviceOrderId);
-            serviceOrderPot.setClientAdressId(clientAddressId);
-            serviceOrderPot.setOrderPotId(orderPotId);
-            serviceOrderPot.setDeliveryAt(deliveryAt);
+            OrderPot orderPot = new OrderPot();
+            orderPot.setProductId(productId);
+            orderPot.setQuantity(quantity);
+            orderPot.setPrice(price);
             
-            ServiceOrderPotDBManager serviceOrderPotDBManager = new ServiceOrderPotDBManager();
-            serviceOrderPotDBManager.saveServiceOrderPot(serviceOrderPot);
+            OrderPotDBManager orderPotDBManager = new OrderPotDBManager();
+            orderPot = orderPotDBManager.saveOrderPot(orderPot);
             
-//            JSONObject jsonResult = new JSONObject();
-//            //TODO : Dönüş!
-//            out.println(jsonResult);
+            JSONObject jsonResult = new JSONObject();
+            jsonResult.put("id", orderPot.getId());
+            out.println(jsonResult);
         } finally {
             out.close();
         }

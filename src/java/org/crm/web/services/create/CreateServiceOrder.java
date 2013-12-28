@@ -57,6 +57,8 @@ public class CreateServiceOrder extends HttpServlet {
             jsonResult.put("id", serviceOrder.getId());
             
             out.println(jsonResult);
+        } catch(Exception ex) {
+            out.println(ex.getMessage());
         } finally {
             out.close();
         }
