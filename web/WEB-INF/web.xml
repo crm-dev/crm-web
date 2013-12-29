@@ -20,6 +20,18 @@
         <servlet-name>CreateOrderPot</servlet-name>
         <servlet-class>org.crm.web.services.create.CreateOrderPot</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetClientOrganization</servlet-name>
+        <servlet-class>org.crm.web.services.obtain.GetClientOrganization</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetProduct</servlet-name>
+        <servlet-class>org.crm.web.services.obtain.GetProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetProducts</servlet-name>
+        <servlet-class>org.crm.web.services.obtain.GetProducts</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServiceOrderCreate</servlet-name>
         <url-pattern>/crm.createserviceorder</url-pattern>
@@ -39,6 +51,18 @@
     <servlet-mapping>
         <servlet-name>CreateOrderPot</servlet-name>
         <url-pattern>/crm.createorderpot</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetClientOrganization</servlet-name>
+        <url-pattern>/crm.getclientorganization</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetProduct</servlet-name>
+        <url-pattern>/crm.getproduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetProducts</servlet-name>
+        <url-pattern>/crm.getproducts</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

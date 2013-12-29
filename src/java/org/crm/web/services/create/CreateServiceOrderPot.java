@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.crm.db.manager.ServiceOrderDBManager;
 import org.crm.db.manager.ServiceOrderPotDBManager;
 import org.crm.entity.ServiceOrderPot;
 import org.json.simple.JSONObject;
@@ -39,31 +40,31 @@ public class CreateServiceOrderPot extends HttpServlet {
         try {
             String serviceOrderIdParam = request.getParameter("serviceOrderId");
             String orderPotIdParam = request.getParameter("orderPotId");
-            String clientAdressIdParam = request.getParameter("clientAdressId");
-            String deliveryAtParam = request.getParameter("deliveryAt");
             
-            if((serviceOrderIdParam == null) || (orderPotIdParam == null) || (clientAdressIdParam == null) || (deliveryAtParam == null)) {
+            if((serviceOrderIdParam == null) || (orderPotIdParam == null)) {
                 return;//TODO : hata kodu basılacak
             }
             
-            if(serviceOrderIdParam.equals("") || orderPotIdParam.equals("") || clientAdressIdParam.equals("") || deliveryAtParam.equals("")) {
+            if(serviceOrderIdParam.equals("") || orderPotIdParam.equals("")) {
                 return;//TODO : hata kodu basılacak
             }
             
             Integer serviceOrderId = Integer.parseInt(serviceOrderIdParam);
             Integer orderPotId = Integer.parseInt(orderPotIdParam);
-            Integer clientAddressId = Integer.parseInt(clientAdressIdParam);
-            Date deliveryAt = Date.valueOf(deliveryAtParam);
             
-            if((serviceOrderId == null) || (orderPotId == null) || (clientAddressId == null) || (deliveryAt == null)) {
+            if((serviceOrderId == null) || (orderPotId == null)) {
+                return;//TODO : hata kodu
+            }
+            
+            ServiceOrderDBManager serviceOrderDBManager = new ServiceOrderDBManager();
+            if(!serviceOrderDBManager.exists(serviceOrderId)) {
                 return;//TODO : hata kodu
             }
             
             ServiceOrderPot serviceOrderPot = new ServiceOrderPot();
             serviceOrderPot.setServiceOrderId(serviceOrderId);
-            serviceOrderPot.setClientAdressId(clientAddressId);
+//            serviceOrderPot.setClientAdressId(clientAddressId);
             serviceOrderPot.setOrderPotId(orderPotId);
-            serviceOrderPot.setDeliveryAt(deliveryAt);
             
             ServiceOrderPotDBManager serviceOrderPotDBManager = new ServiceOrderPotDBManager();
             serviceOrderPotDBManager.saveServiceOrderPot(serviceOrderPot);

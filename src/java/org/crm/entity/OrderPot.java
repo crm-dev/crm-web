@@ -6,6 +6,9 @@
 
 package org.crm.entity;
 
+import java.sql.Date;
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author cag
@@ -19,6 +22,16 @@ public class OrderPot {
     private int quantity;
     
     private double price;
+    
+    private int clientOrganizationAddressId;
+    
+    private Date deliveryAt;
+    
+    //
+    
+    private Address clientOrganizationAddress;
+    
+    private ClientOrganization clientOrganization;
 
     public int getId() {
         return id;
@@ -50,6 +63,29 @@ public class OrderPot {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getClientOrganizationAddressId() {
+        return clientOrganizationAddressId;
+    }
+
+    public void setClientOrganizationAddressId(int clientOrganizationAddressId) {
+        this.clientOrganizationAddressId = clientOrganizationAddressId;
+    }
+
+    public Date getDeliveryAt() {
+        return deliveryAt;
+    }
+
+    public void setDeliveryAt(Date deliveryAt) {
+        this.deliveryAt = deliveryAt;
+    }
+    
+    public JSONObject toJSon() {
+        JSONObject result = new JSONObject();
+        result.put("id", this.id);
+        result.put("", this.)
+        
     }
     
 }

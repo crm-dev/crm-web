@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package org.crm.db.manager;
+package org.crm.db.manager.helper;
 
 import java.util.List;
 

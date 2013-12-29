@@ -20,6 +20,37 @@ import org.crm.entity.ServiceOrder;
  */
 public class ServiceOrderDBManager {
     
+    public boolean exists(int id) {
+
+        Connector connector = new Connector();
+        Connection conn = null;
+        boolean result = false;
+        try {
+            
+            conn = connector.getConnection();
+            PreparedStatement stmt = null;
+            stmt = conn.prepareStatement("SELECT 1 FROM serviceOrder WHERE id=?");
+            ResultSet rs = null;
+            
+            stmt.setInt(1, id);
+            
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                result = true;
+            }
+        } catch (java.sql.SQLException ex) {
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception ex) {
+            }
+            conn = null;
+        }
+
+        return result;
+    }
+    
     public ServiceOrder getOne(int id) {
 
         Connector connector = new Connector();

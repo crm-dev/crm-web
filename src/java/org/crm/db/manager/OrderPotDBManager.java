@@ -4,6 +4,7 @@
  */
 package org.crm.db.manager;
 
+import org.crm.db.manager.helper.StatementHelper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,6 +43,8 @@ public class OrderPotDBManager {
                 orderPot.setPrice(rs.getDouble("price"));
                 orderPot.setProductId(rs.getInt("productId"));
                 orderPot.setQuantity(rs.getInt("quantity"));
+                orderPot.setClientOrganizationAddressId(rs.getInt("clientOrganizationAddressId"));
+                orderPot.setDeliveryAt(rs.getDate("deliveryAt"));
                 
                 resultList.add(orderPot);
             }
@@ -65,11 +68,13 @@ public class OrderPotDBManager {
         ResultSet resultSet = null;
         try {
             conn = connector.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO orderPot(productId,quantity,price) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            stmt = conn.prepareStatement("INSERT INTO orderPot(productId,quantity,price,clientOrganizationAddressId,deliveryAt) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             
             stmt.setInt(1, orderPot.getProductId());
             stmt.setInt(2, orderPot.getQuantity());
             stmt.setDouble(3, orderPot.getPrice());
+            stmt.setDouble(4, orderPot.getClientOrganizationAddressId());
+            stmt.setDate(5, orderPot.getDeliveryAt());
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {

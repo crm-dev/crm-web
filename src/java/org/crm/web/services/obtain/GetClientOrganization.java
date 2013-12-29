@@ -13,8 +13,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.crm.db.manager.ClientOrganizationDBManager;
 import org.crm.db.manager.ServiceOrderDBManager;
 import org.crm.db.manager.ServiceOrderPotDBManager;
+import org.crm.entity.ClientOrganization;
 import org.crm.entity.ServiceOrder;
 import org.crm.entity.ServiceOrderPot;
 import org.json.simple.JSONObject;
@@ -23,7 +25,7 @@ import org.json.simple.JSONObject;
  *
  * @author cag
  */
-public class GetServiceOrderDetails extends HttpServlet {
+public class GetClientOrganization extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,36 +41,26 @@ public class GetServiceOrderDetails extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String serviceOrderId = request.getParameter("id");
+            String clientOrganizationId = request.getParameter("id");
 
-            if (serviceOrderId == null) {
+            if (clientOrganizationId == null) {
                 return;//TODO : hata kodu basılacak
             }
 
-            if (serviceOrderId.equals("")) {
+            if (clientOrganizationId.equals("")) {
                 return;//TODO : hata kodu basılacak
             }
             
-            Integer id = Integer.parseInt(serviceOrderId);
+            Integer id = Integer.parseInt(clientOrganizationId);
             
             if(id == null) {
                 return;
             }
 
-            ServiceOrderDBManager serviceOrderDBManager = new ServiceOrderDBManager();
-            ServiceOrder serviceOrder = serviceOrderDBManager.getOne(id);
+            ClientOrganizationDBManager clientOrganizationDBManager = new ClientOrganizationDBManager();
+            ClientOrganization clientOrganization = clientOrganizationDBManager.getOne(id);
             
-            ServiceOrderPotDBManager serviceOrderPotDBManager = new ServiceOrderPotDBManager();
-            List<ServiceOrderPot> serviceOrderPots = serviceOrderPotDBManager.getList(serviceOrder.getId());
-            
-            List<Integer> serviceOrderPotIds = new ArrayList<Integer>();
-//            for(ServiceOrderPot soup : )
-//            
-//            JSONObject result = serviceOrder.toJSon();
-//            
-//            for(ServiceOrderPot serviceOrderPot)
-            
-            out.println(serviceOrder.toJSon());
+            out.println(clientOrganization.toJSon());
         } finally {
             out.close();
         }

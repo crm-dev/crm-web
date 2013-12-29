@@ -18,9 +18,9 @@ public class ServiceOrderPot {
     
     private int serviceOrderId;
     
-    private int clientAdressId;
+//    private int clientAdressId;
     
-    private Date deliveryAt;
+    private OrderPot orderPot = null;
 
     public int getOrderPotId() {
         return orderPotId;
@@ -38,20 +38,12 @@ public class ServiceOrderPot {
         this.serviceOrderId = serviceOrderId;
     }
 
-    public int getClientAdressId() {
-        return clientAdressId;
+    public OrderPot getOrderPot() {
+        return orderPot;
     }
 
-    public void setClientAdressId(int clientAdressId) {
-        this.clientAdressId = clientAdressId;
-    }
-
-    public Date getDeliveryAt() {
-        return deliveryAt;
-    }
-
-    public void setDeliveryAt(Date deliveryAt) {
-        this.deliveryAt = deliveryAt;
+    public void setOrderPot(OrderPot orderPot) {
+        this.orderPot = orderPot;
     }
     
     

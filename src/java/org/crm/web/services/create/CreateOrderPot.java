@@ -8,6 +8,7 @@ package org.crm.web.services.create;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -52,20 +53,24 @@ public class CreateOrderPot extends HttpServlet {
             String productIdParam = request.getParameter("productId");
             String quantityParam = request.getParameter("quantity");
             String priceParam = request.getParameter("price");//TODO : Hesaplanacak
+            String clientOrganizationAddressIdParam = request.getParameter("clAdrId");
+            String deliveryAtParam = request.getParameter("deliveryAt");
             
-            if((productIdParam == null) || (quantityParam == null) || (priceParam == null)) {
+            if((productIdParam == null) || (quantityParam == null) || (priceParam == null) || (clientOrganizationAddressIdParam == null) || (deliveryAtParam == null)) {
                 return;//TODO : hata kodu basılacak
             }
             
-            if(productIdParam.equals("") || quantityParam.equals("") || priceParam.equals("")) {
+            if(productIdParam.equals("") || quantityParam.equals("") || priceParam.equals("") || clientOrganizationAddressIdParam.equals("") || (deliveryAtParam.equals(""))) {
                 return;//TODO : hata kodu basılacak
             }
             
             Integer productId = Integer.parseInt(productIdParam);
             Integer quantity = Integer.parseInt(quantityParam);
             Double price = Double.parseDouble(priceParam);
+            Integer clientOrganizationAddressId = Integer.parseInt(clientOrganizationAddressIdParam);
+            Date deliveryAt = Date.valueOf(deliveryAtParam);
             
-            if((productId == null) || (quantity == null) || (price == null)) {
+            if((productId == null) || (quantity == null) || (price == null) || (clientOrganizationAddressId == null) || (deliveryAt == null)) {
                 return;//TODO : hata kodu
             }
             
@@ -73,6 +78,8 @@ public class CreateOrderPot extends HttpServlet {
             orderPot.setProductId(productId);
             orderPot.setQuantity(quantity);
             orderPot.setPrice(price);
+            orderPot.setClientOrganizationAddressId(clientOrganizationAddressId);
+            orderPot.setDeliveryAt(deliveryAt);
             
             OrderPotDBManager orderPotDBManager = new OrderPotDBManager();
             orderPot = orderPotDBManager.saveOrderPot(orderPot);

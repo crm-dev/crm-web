@@ -6,7 +6,9 @@
 
 package org.crm.entity;
 
+import java.util.ArrayList;
 import java.util.List;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -19,9 +21,9 @@ public class ServiceOrder {
     
     private String serviceName;
     
-    private List<ServiceOrderPot> orderPots;
-    
     private double totalOrderPrice;//serviceOrderPot-service
+    
+    private List<OrderPot> orderPots;
 
     public int getId() {
         return id;
@@ -39,11 +41,11 @@ public class ServiceOrder {
         this.serviceName = serviceName;
     }
 
-    public List<ServiceOrderPot> getOrderPots() {
+    public List<OrderPot> getOrderPots() {
         return orderPots;
     }
 
-    public void setOrderPots(List<ServiceOrderPot> orderPots) {
+    public void setOrderPots(List<OrderPot> orderPots) {
         this.orderPots = orderPots;
     }
 
@@ -59,6 +61,17 @@ public class ServiceOrder {
         JSONObject jo = new JSONObject();
         jo.put("id", this.id);
         jo.put("serviceName", this.serviceName);
+        
+        
+        if(this.orderPots != null) {
+            if(!this.orderPots.isEmpty()) {
+                JSONArray orderPotsJSON = new JSONArray();
+                for(ServiceOrderPot serviceOrderPot : this.orderPots) {
+                    JSONObject serviceOrderPotJSON = new JSONObject();
+//                    serviceOrderPotJSON.put("id", serviceOrderPot)
+                }
+            }
+        }
         
         return jo;
     }

@@ -40,8 +40,6 @@ public class ServiceOrderPotDBManager {
                 ServiceOrderPot serviceOrderPot = new ServiceOrderPot();
                 serviceOrderPot.setOrderPotId(rs.getInt("orderPotId"));
                 serviceOrderPot.setServiceOrderId(rs.getInt("serviceOrderId"));
-                serviceOrderPot.setClientAdressId(rs.getInt("clientAddressId"));
-                serviceOrderPot.setDeliveryAt(rs.getDate("deliveryAt"));
                 
                 resultList.add(serviceOrderPot);
             }
@@ -65,12 +63,10 @@ public class ServiceOrderPotDBManager {
         try {
 
             conn = connector.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO serviceOrderPot(serviceOrderId,orderPotId,clientOrganizationAddressId,deliveryAt) VALUES(?,?,?,?)");
+            stmt = conn.prepareStatement("INSERT INTO serviceOrderPot(serviceOrderId,orderPotId) VALUES(?,?)");
             
             stmt.setInt(1, serviceOrderPot.getServiceOrderId());
             stmt.setInt(2, serviceOrderPot.getOrderPotId());
-            stmt.setInt(3, serviceOrderPot.getClientAdressId());
-            stmt.setDate(4, serviceOrderPot.getDeliveryAt());
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {

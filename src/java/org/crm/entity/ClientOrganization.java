@@ -6,6 +6,8 @@
 
 package org.crm.entity;
 
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author cag
@@ -16,7 +18,7 @@ public class ClientOrganization {
     
     private String name;
     
-    private ClientTitle clientTitle;
+//    private ClientTitle clientTitle;
 
     public int getId() {
         return id;
@@ -33,13 +35,21 @@ public class ClientOrganization {
     public void setName(String name) {
         this.name = name;
     }
-
-    public ClientTitle getClientTitle() {
-        return clientTitle;
+    
+    public JSONObject toJSon() {
+        JSONObject result = new JSONObject();
+        result.put("id", this.id);
+        result.put("name", this.name);
+        
+        return result;
     }
 
-    public void setClientTitle(ClientTitle clientTitle) {
-        this.clientTitle = clientTitle;
-    }
+//    public ClientTitle getClientTitle() {
+//        return clientTitle;
+//    }
+//
+//    public void setClientTitle(ClientTitle clientTitle) {
+//        this.clientTitle = clientTitle;
+//    }
     
 }

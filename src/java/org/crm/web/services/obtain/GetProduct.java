@@ -7,23 +7,18 @@ package org.crm.web.services.obtain;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.crm.db.manager.ServiceOrderDBManager;
-import org.crm.db.manager.ServiceOrderPotDBManager;
-import org.crm.entity.ServiceOrder;
-import org.crm.entity.ServiceOrderPot;
-import org.json.simple.JSONObject;
+import org.crm.db.manager.ProductDBManager;
+import org.crm.entity.Product;
 
 /**
  *
  * @author cag
  */
-public class GetServiceOrderDetails extends HttpServlet {
+public class GetProduct extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,36 +34,26 @@ public class GetServiceOrderDetails extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String serviceOrderId = request.getParameter("id");
+            String productId = request.getParameter("id");
 
-            if (serviceOrderId == null) {
+            if (productId == null) {
                 return;//TODO : hata kodu basılacak
             }
 
-            if (serviceOrderId.equals("")) {
+            if (productId.equals("")) {
                 return;//TODO : hata kodu basılacak
             }
             
-            Integer id = Integer.parseInt(serviceOrderId);
+            Integer id = Integer.parseInt(productId);
             
             if(id == null) {
                 return;
             }
 
-            ServiceOrderDBManager serviceOrderDBManager = new ServiceOrderDBManager();
-            ServiceOrder serviceOrder = serviceOrderDBManager.getOne(id);
+            ProductDBManager productDBManager = new ProductDBManager();
+            Product product = productDBManager.getOne(id);
             
-            ServiceOrderPotDBManager serviceOrderPotDBManager = new ServiceOrderPotDBManager();
-            List<ServiceOrderPot> serviceOrderPots = serviceOrderPotDBManager.getList(serviceOrder.getId());
-            
-            List<Integer> serviceOrderPotIds = new ArrayList<Integer>();
-//            for(ServiceOrderPot soup : )
-//            
-//            JSONObject result = serviceOrder.toJSon();
-//            
-//            for(ServiceOrderPot serviceOrderPot)
-            
-            out.println(serviceOrder.toJSon());
+            out.println(product.toJSon(true));
         } finally {
             out.close();
         }
