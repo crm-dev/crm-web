@@ -21,7 +21,43 @@ import org.crm.entity.Address;
  */
 public class AddressDBManager {
     
-    public Address getOne(int organizationId) {
+    public Address getOne(int id) {
+
+        Connector connector = new Connector();
+        Connection conn = null;
+        Address address = null;
+        try {
+            conn = connector.getConnection();
+            PreparedStatement stmt = null;
+            
+            stmt = conn.prepareStatement("SELECT * FROM address WHERE id=?");
+            ResultSet rs = null;
+            
+            stmt.setInt(1, id);
+            
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                
+                address = new Address();
+                address.setId(rs.getInt("id"));
+                address.setOrganizationId(rs.getInt("organizationId"));
+                address.setAddressDescription(rs.getString("addressDescription"));
+                
+            }
+        } catch (java.sql.SQLException ex) {
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception ex) {
+            }
+            conn = null;
+        }
+
+        return address;
+    }
+    
+    public Address getOneByOrganizationId(int organizationId) {
 
         Connector connector = new Connector();
         Connection conn = null;

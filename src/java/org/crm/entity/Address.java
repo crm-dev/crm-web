@@ -6,6 +6,8 @@
 
 package org.crm.entity;
 
+import org.json.simple.JSONObject;
+
 /**
  *
  * @author cag
@@ -19,6 +21,10 @@ public class Address {
     private int organizationId;
     
     private String addressDescription;
+    
+    //
+    
+    private ClientOrganization clientOrganization;
 
     public int getId() {
         return id;
@@ -42,6 +48,26 @@ public class Address {
 
     public void setAddressDescription(String fullAddress) {
         this.addressDescription = fullAddress;
+    }
+
+    public ClientOrganization getClientOrganization() {
+        return clientOrganization;
+    }
+
+    public void setClientOrganization(ClientOrganization clientOrganization) {
+        this.clientOrganization = clientOrganization;
+    }
+    
+    public JSONObject toJSon() {
+        JSONObject result = new JSONObject();
+        result.put("id", this.id);
+        result.put("description", this.addressDescription);
+        
+        if(this.clientOrganization != null) {
+            result.put("clientOrganization", this.clientOrganization.toJSon());
+        }
+        
+        return result;
     }
     
 }

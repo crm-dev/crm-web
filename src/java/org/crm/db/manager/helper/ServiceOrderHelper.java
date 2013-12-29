@@ -8,6 +8,7 @@ package org.crm.db.manager.helper;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.crm.db.manager.AddressDBManager;
 import org.crm.db.manager.OrderPotDBManager;
 import org.crm.db.manager.ServiceOrderPotDBManager;
 import org.crm.entity.OrderPot;
@@ -19,9 +20,9 @@ import org.json.simple.JSONObject;
  *
  * @author cag
  */
-public class ServiceOrderDetailedListHelper {
+public class ServiceOrderHelper {
     
-    public JSONObject getDetailed(ServiceOrder serviceOrder) {
+    public ServiceOrder getDetailed(ServiceOrder serviceOrder) {
         ServiceOrderPotDBManager serviceOrderPotDBManager = new ServiceOrderPotDBManager();
         List<ServiceOrderPot> serviceOrderPots = serviceOrderPotDBManager.getList(serviceOrder.getId());
         
@@ -33,10 +34,18 @@ public class ServiceOrderDetailedListHelper {
         
         List<OrderPot> orderPots = new ArrayList<OrderPot>();
         OrderPotDBManager orderPotDBManager = new OrderPotDBManager();
+        OrderPotHelper orderPotHelper = new OrderPotHelper();
         if(!serviceOrderPotIds.isEmpty()) {
             orderPots = orderPotDBManager.getList(serviceOrderPotIds);
         }
         
+        for(OrderPot orderPot : orderPots) {
+            orderPotHelper.getDetail(orderPot);
+        }
+        
+        serviceOrder.setOrderPots(orderPots);
+        
+        return serviceOrder;
     }
     
 }

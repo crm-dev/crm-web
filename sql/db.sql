@@ -30,14 +30,22 @@ create table address {
 
 /*-------------------------------------------------------------------*/
 
+CREATE TABLE `adminUser` (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+        userName VARCHAR(256),
+	password VARCHAR(256),
+        createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
-create table address {
+
+CREATE TABLE `address` (
 	id INT(11) NOT NULL AUTO_INCREMENT,
         organizationId INT(11) NOT NULL DEFAULT 0,
 	addressDescription VARCHAR(256),
         createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
-} ENGINE=InnoDB AUTO_INCREMENT=1
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8;
 
 
 CREATE TABLE `product` (

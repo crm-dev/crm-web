@@ -23,7 +23,12 @@ public class ServiceOrder {
     
     private double totalOrderPrice;//serviceOrderPot-service
     
+    
+    //
+    
     private List<OrderPot> orderPots;
+    
+//    private ClientOrganization clientOrganization;
 
     public int getId() {
         return id;
@@ -66,10 +71,12 @@ public class ServiceOrder {
         if(this.orderPots != null) {
             if(!this.orderPots.isEmpty()) {
                 JSONArray orderPotsJSON = new JSONArray();
-                for(ServiceOrderPot serviceOrderPot : this.orderPots) {
-                    JSONObject serviceOrderPotJSON = new JSONObject();
-//                    serviceOrderPotJSON.put("id", serviceOrderPot)
+                for(OrderPot orderPot : this.orderPots) {
+                    JSONObject serviceOrderPotJSON = orderPot.toJSon();
+                    orderPotsJSON.add(serviceOrderPotJSON);
                 }
+                
+                jo.put("orderPots", orderPotsJSON);
             }
         }
         

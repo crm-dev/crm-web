@@ -7,24 +7,18 @@ package org.crm.web.services.obtain;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.crm.db.manager.ServiceOrderDBManager;
-import org.crm.db.manager.ServiceOrderPotDBManager;
-import org.crm.db.manager.helper.ServiceOrderHelper;
-import org.crm.entity.ServiceOrder;
-import org.crm.entity.ServiceOrderPot;
-import org.json.simple.JSONObject;
+import org.crm.db.manager.AdminUserDBManager;
+import org.crm.entity.AdminUser;
 
 /**
  *
  * @author cag
  */
-public class GetServiceOrderDetails extends HttpServlet {
+public class GetLogin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,29 +34,27 @@ public class GetServiceOrderDetails extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String serviceOrderId = request.getParameter("id");
+            String userName = request.getParameter("userName");
+            String password = request.getParameter("password");
 
-            if (serviceOrderId == null) {
+            if ((userName == null) || (password == null)) {
                 return;//TODO : hata kodu basılacak
             }
 
-            if (serviceOrderId.equals("")) {
+            if (userName.equals("") || password.equals("")) {
                 return;//TODO : hata kodu basılacak
             }
+
+            AdminUserDBManager adminUserDBManager = new AdminUserDBManager();
+            AdminUser adminUser = adminUserDBManager.getOne(userName, password);
             
-            Integer id = Integer.parseInt(serviceOrderId);
-            
-            if(id == null) {
+            if(adminUser == null) {
+                out.println("fail");
                 return;
             }
-
-            ServiceOrderDBManager serviceOrderDBManager = new ServiceOrderDBManager();
-            ServiceOrder serviceOrder = serviceOrderDBManager.getOne(id);
-            
-            ServiceOrderHelper serviceOrderHelper = new ServiceOrderHelper();
-            serviceOrder = serviceOrderHelper.getDetailed(serviceOrder);
-            
-            out.println(serviceOrder.toJSon());
+            else {
+                out.println("ok");
+            }
         } finally {
             out.close();
         }

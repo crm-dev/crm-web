@@ -31,7 +31,7 @@ public class OrderPot {
     
     private Address clientOrganizationAddress;
     
-    private ClientOrganization clientOrganization;
+    private Product product;
 
     public int getId() {
         return id;
@@ -80,12 +80,38 @@ public class OrderPot {
     public void setDeliveryAt(Date deliveryAt) {
         this.deliveryAt = deliveryAt;
     }
+
+    public Address getClientOrganizationAddress() {
+        return clientOrganizationAddress;
+    }
+
+    public void setClientOrganizationAddress(Address clientOrganizationAddress) {
+        this.clientOrganizationAddress = clientOrganizationAddress;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
     
     public JSONObject toJSon() {
         JSONObject result = new JSONObject();
         result.put("id", this.id);
-        result.put("", this.)
         
+        result.put("quantity", this.quantity);
+        
+        if(this.product != null) {
+            result.put("product", this.product.toJSon(true));
+        }
+        
+        if(this.clientOrganizationAddress != null) {
+            result.put("deliveryAddress", this.clientOrganizationAddress.toJSon());
+        }
+        
+        return result;
     }
     
 }
