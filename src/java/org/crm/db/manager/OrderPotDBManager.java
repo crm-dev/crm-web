@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.crm.data.OrderPotCompleteStatus;
 import org.crm.dbms.Connector;
 import org.crm.entity.OrderPot;
 
@@ -20,6 +21,54 @@ import org.crm.entity.OrderPot;
  * @author cag
  */
 public class OrderPotDBManager {
+    
+    public List<OrderPot> getListByOrderByProductionType(int productionTypeId) {
+
+        Connector connector = new Connector();
+        Connection conn = null;
+        List<OrderPot> resultList = new ArrayList<OrderPot>();
+        try {
+            conn = connector.getConnection();
+            PreparedStatement stmt = null;
+            stmt = conn.prepareStatement("SELECT * FROM orderPot WHERE productionTypeId=?");
+            ResultSet rs = null;
+            
+            stmt.setInt(1, productionTypeId);
+            
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                
+                /*
+                private int orderTypeId;
+    
+    private int isComplete;
+                */
+                
+                OrderPot orderPot = new OrderPot();
+                orderPot.setId(rs.getInt("id"));
+                orderPot.setPrice(rs.getDouble("price"));
+                orderPot.setProductId(rs.getInt("productId"));
+                orderPot.setQuantity(rs.getInt("quantity"));
+                orderPot.setClientOrganizationAddressId(rs.getInt("clientOrganizationAddressId"));
+                orderPot.setOrderTypeId(rs.getInt("orderTypeId"));
+                orderPot.setProductionTypeId(rs.getInt("productionTypeId"));
+                orderPot.setIsComplete(rs.getInt("isComplete"));
+                orderPot.setDeliveryAt(rs.getDate("deliveryAt"));
+                
+                resultList.add(orderPot);
+            }
+        } catch (java.sql.SQLException ex) {
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception ex) {
+            }
+            conn = null;
+        }
+
+        return resultList;
+    }
 
     public List<OrderPot> getList(List<Integer> ids) {
 
@@ -38,12 +87,21 @@ public class OrderPotDBManager {
 
             while (rs.next()) {
                 
+                /*
+                private int orderTypeId;
+    
+    private int isComplete;
+                */
+                
                 OrderPot orderPot = new OrderPot();
                 orderPot.setId(rs.getInt("id"));
                 orderPot.setPrice(rs.getDouble("price"));
                 orderPot.setProductId(rs.getInt("productId"));
                 orderPot.setQuantity(rs.getInt("quantity"));
                 orderPot.setClientOrganizationAddressId(rs.getInt("clientOrganizationAddressId"));
+                orderPot.setOrderTypeId(rs.getInt("orderTypeId"));
+                orderPot.setProductionTypeId(rs.getInt("productionTypeId"));
+                orderPot.setIsComplete(rs.getInt("isComplete"));
                 orderPot.setDeliveryAt(rs.getDate("deliveryAt"));
                 
                 resultList.add(orderPot);
@@ -68,13 +126,16 @@ public class OrderPotDBManager {
         ResultSet resultSet = null;
         try {
             conn = connector.getConnection();
-            stmt = conn.prepareStatement("INSERT INTO orderPot(productId,quantity,price,clientOrganizationAddressId,deliveryAt) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            stmt = conn.prepareStatement("INSERT INTO orderPot(productId,quantity,price,clientOrganizationAddressId,deliveryAt,isComplete,orderTypeId) VALUES(?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             
             stmt.setInt(1, orderPot.getProductId());
             stmt.setInt(2, orderPot.getQuantity());
             stmt.setDouble(3, orderPot.getPrice());
             stmt.setDouble(4, orderPot.getClientOrganizationAddressId());
             stmt.setDate(5, orderPot.getDeliveryAt());
+            stmt.setInt(6, orderPot.getIsComplete());
+            stmt.setInt(7, orderPot.getOrderTypeId());
+            stmt.setInt(8, orderPot.getProductionTypeId());
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {

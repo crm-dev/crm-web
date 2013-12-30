@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.crm.db.manager.OrderPotDBManager;
 import org.crm.db.manager.ServiceOrderPotDBManager;
+import org.crm.data.OrderPotCompleteStatus;
 import org.crm.entity.OrderPot;
 import org.json.simple.JSONObject;
 
@@ -55,12 +56,14 @@ public class CreateOrderPot extends HttpServlet {
             String priceParam = request.getParameter("price");//TODO : Hesaplanacak
             String clientOrganizationAddressIdParam = request.getParameter("clAdrId");
             String deliveryAtParam = request.getParameter("deliveryAt");
+            String orderTypeIdParam = request.getParameter("orderyTypeId");
+            String productionTypeIdParam = request.getParameter("productionTypeId");
             
-            if((productIdParam == null) || (quantityParam == null) || (priceParam == null) || (clientOrganizationAddressIdParam == null) || (deliveryAtParam == null)) {
+            if((productIdParam == null) || (quantityParam == null) || (priceParam == null) || (clientOrganizationAddressIdParam == null) || (deliveryAtParam == null) || (orderTypeIdParam == null) || (productIdParam == null)) {
                 return;//TODO : hata kodu basılacak
             }
             
-            if(productIdParam.equals("") || quantityParam.equals("") || priceParam.equals("") || clientOrganizationAddressIdParam.equals("") || (deliveryAtParam.equals(""))) {
+            if(productIdParam.equals("") || quantityParam.equals("") || priceParam.equals("") || clientOrganizationAddressIdParam.equals("") || (deliveryAtParam.equals("")) || orderTypeIdParam.equals("") || productIdParam.equals("")) {
                 return;//TODO : hata kodu basılacak
             }
             
@@ -69,8 +72,10 @@ public class CreateOrderPot extends HttpServlet {
             Double price = Double.parseDouble(priceParam);
             Integer clientOrganizationAddressId = Integer.parseInt(clientOrganizationAddressIdParam);
             Date deliveryAt = Date.valueOf(deliveryAtParam);
+            Integer orderTypeId = Integer.parseInt(orderTypeIdParam);
+            Integer productionTypeId = Integer.parseInt(productionTypeIdParam);
             
-            if((productId == null) || (quantity == null) || (price == null) || (clientOrganizationAddressId == null) || (deliveryAt == null)) {
+            if((productId == null) || (quantity == null) || (price == null) || (clientOrganizationAddressId == null) || (deliveryAt == null) || (orderTypeId == null)) {
                 return;//TODO : hata kodu
             }
             
@@ -80,6 +85,9 @@ public class CreateOrderPot extends HttpServlet {
             orderPot.setPrice(price);
             orderPot.setClientOrganizationAddressId(clientOrganizationAddressId);
             orderPot.setDeliveryAt(deliveryAt);
+            orderPot.setOrderTypeId(orderTypeId);
+            orderPot.setProductionTypeId(productionTypeId);
+            orderPot.setIsComplete(OrderPotCompleteStatus.NOT_COMPLETED.getKey());
             
             OrderPotDBManager orderPotDBManager = new OrderPotDBManager();
             orderPot = orderPotDBManager.saveOrderPot(orderPot);

@@ -54,6 +54,7 @@ public class GetLogin extends HttpServlet {
             }
             else {
                 out.println("ok");
+//                response.sendRedirect("http://google.com");
             }
         } finally {
             out.close();

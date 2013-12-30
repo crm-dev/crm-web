@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.crm.db.manager.helper.StatementHelper;
 import org.crm.dbms.Connector;
 import org.crm.entity.ServiceOrderPot;
 
@@ -18,6 +19,41 @@ import org.crm.entity.ServiceOrderPot;
  * @author cag
  */
 public class ServiceOrderPotDBManager {
+    
+    public List<ServiceOrderPot> getListByOrderIds(List<Integer> orderPotIds) {
+
+        Connector connector = new Connector();
+        Connection conn = null;
+        List<ServiceOrderPot> resultList = new ArrayList<ServiceOrderPot>();
+        try {
+
+            conn = connector.getConnection();
+            PreparedStatement stmt = null;
+            String joinedStatement = StatementHelper.createJoinedStatementParam(orderPotIds);
+            stmt = conn.prepareStatement("SELECT * FROM serviceOrderPot WHERE orderPotId IN(" + joinedStatement + ")");
+            ResultSet rs = null;
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                
+                ServiceOrderPot serviceOrderPot = new ServiceOrderPot();
+                serviceOrderPot.setOrderPotId(rs.getInt("orderPotId"));
+                serviceOrderPot.setServiceOrderId(rs.getInt("serviceOrderId"));
+                
+                resultList.add(serviceOrderPot);
+            }
+        } catch (java.sql.SQLException ex) {
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception ex) {
+            }
+            conn = null;
+        }
+
+        return resultList;
+    }
 
     public List<ServiceOrderPot> getList(int serviceOrderId) {
 

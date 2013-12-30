@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.crm.db.manager.helper.StatementHelper;
 import org.crm.dbms.Connector;
 import org.crm.entity.ServiceOrder;
 
@@ -82,6 +83,39 @@ public class ServiceOrderDBManager {
         }
 
         return result;
+    }
+    
+    public List<ServiceOrder> getList(List<Integer> ids) {
+
+        Connector connector = new Connector();
+        Connection conn = null;
+        List<ServiceOrder> resultList = new ArrayList<ServiceOrder>();
+        try {
+            
+            conn = connector.getConnection();
+            PreparedStatement stmt = null;
+            String joinedStatement = StatementHelper.createJoinedStatementParam(ids);
+            stmt = conn.prepareStatement("SELECT * FROM serviceOrder WHERE id IN(" + joinedStatement + ")");
+            ResultSet rs = null;
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ServiceOrder serviceOrder = new ServiceOrder();
+                serviceOrder.setId(rs.getInt("id"));
+                serviceOrder.setServiceName(rs.getString("serviceName"));
+
+                resultList.add(serviceOrder);
+            }
+        } catch (java.sql.SQLException ex) {
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception ex) {
+            }
+            conn = null;
+        }
+
+        return resultList;
     }
 
     public List<ServiceOrder> getList() {

@@ -36,6 +36,14 @@
         <servlet-name>GetLogin</servlet-name>
         <servlet-class>org.crm.web.services.obtain.GetLogin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetServiceOrderDetailsByProductionType</servlet-name>
+        <servlet-class>org.crm.web.services.obtain.GetServiceOrderDetailsByProductionType</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Creator</servlet-name>
+        <servlet-class>org.crm.web.services.create.Creator</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServiceOrderCreate</servlet-name>
         <url-pattern>/crm.createserviceorder</url-pattern>
@@ -71,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>GetLogin</servlet-name>
         <url-pattern>/crm.getlogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetServiceOrderDetailsByProductionType</servlet-name>
+        <url-pattern>/crm.getserviceorderdetailsbyproductiontype</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Creator</servlet-name>
+        <url-pattern>/crm.creator</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

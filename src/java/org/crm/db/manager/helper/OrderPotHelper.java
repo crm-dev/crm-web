@@ -7,10 +7,12 @@
 package org.crm.db.manager.helper;
 
 import org.crm.db.manager.AddressDBManager;
-import org.crm.db.manager.ClientOrganizationDBManager;
+import org.crm.db.manager.OrderTypeDBManager;
+import org.crm.db.manager.ProductionTypeDBManager;
 import org.crm.entity.Address;
-import org.crm.entity.ClientOrganization;
 import org.crm.entity.OrderPot;
+import org.crm.entity.OrderType;
+import org.crm.entity.ProductionType;
 
 /**
  *
@@ -28,6 +30,15 @@ public class OrderPotHelper {
         address = addressHelper.getDetail(address);
         orderPot.setClientOrganizationAddress(address);
         
+//        OrderTypeDBManager orderTypeDBManager = new OrderTypeDBManager();
+//        OrderType orderType = orderTypeDBManager.getOne(orderPot.getOrderTypeId());
+//        
+//        orderPot.setOrderType(orderType);
+//        
+//        ProductionTypeDBManager productionTypeDBManager = new ProductionTypeDBManager();
+//        ProductionType productionType = productionTypeDBManager.getOne(orderPot.getProductionTypeId());
+        
+//        orderPot.setProductionType(productionType);
 //        ClientOrganizationDBManager clientOrganizationDBManager = new ClientOrganizationDBManager();
 //        ClientOrganization clientOrganization = clientOrganizationDBManager.getOne(address.getOrganizationId());
         
